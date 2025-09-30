@@ -1,4 +1,4 @@
-package com.curso.db;
+package com.projeto.db;
 
 /**
  * Exceção personalizada de falha de integridade referencial.

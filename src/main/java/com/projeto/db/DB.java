@@ -1,4 +1,4 @@
-package com.curso.db;
+package com.projeto.db;
 
 import java.io.FileInputStream;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.curso.db;
+package com.projeto.db;
 
 public class DbException extends RuntimeException {
 
