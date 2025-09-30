@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.projeto.db.DB;
 import com.projeto.db.DbException;
@@ -55,8 +58,11 @@ public class SellerDaoJDBC implements SellerDao {
 
             rs = st.executeQuery(); //executa a query
             
-            if (rs.next())
-                return buildSeller(rs);
+            if (rs.next()) {
+                Department department = buildDepartment(rs);
+                Seller seller = buildSeller(rs, department);
+                return seller;
+            }
 
             return null;
 
@@ -75,7 +81,57 @@ public class SellerDaoJDBC implements SellerDao {
         return null;
     }
 
-    private Seller buildSeller(ResultSet rs) throws SQLException {
+    @Override
+    public List<Seller> findByDepartment(Department department) {
+
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        String query = 
+               "SELECT seller.*,department.Name as DepName "
+               + "FROM seller INNER JOIN department "
+               + "ON seller.DepartmentId = department.Id "
+               + "WHERE DepartmentId = ? "
+               + "ORDER BY Name";
+
+        try {
+
+            st = conn.prepareStatement(query);
+
+            st.setInt(1, department.getId());
+
+            rs = st.executeQuery();
+
+            List<Seller> list = new ArrayList<>();
+
+            Map<Integer, Department> map = new HashMap<>(); //map to control repetitve department instantiations
+            
+            while (rs.next()) {
+
+                Department dep = map.get(rs.getInt("DepartmentId"));
+                //looking for DepartmentId on map
+
+                if (dep == null) { //if it is null, take it to map
+                    dep = buildDepartment(rs);
+                    map.put(dep.getId(), dep);
+                }
+
+                list.add(buildSeller(rs, dep));
+
+            }
+
+            return list;
+
+        } catch(SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+            DB.closeStatement(st);
+        }
+
+    }
+
+    private Seller buildSeller(ResultSet rs, Department department) throws SQLException {
 
         Seller seller = new Seller();
 
@@ -89,7 +145,7 @@ public class SellerDaoJDBC implements SellerDao {
 
         seller.setBaseSalary(rs.getDouble("BaseSalary"));
 
-        seller.setDepartment(buildDepartment(rs));
+        seller.setDepartment(department);
 
         return seller;
 
