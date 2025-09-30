@@ -54,8 +54,11 @@ public class SellerDaoJDBC implements SellerDao {
             st.setInt(1, id); //atribui um valor ao placeholder
 
             rs = st.executeQuery(); //executa a query
+            
+            if (rs.next())
+                return buildSeller(rs);
 
-            return buildSeller(rs);
+            return null;
 
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
@@ -72,42 +75,37 @@ public class SellerDaoJDBC implements SellerDao {
         return null;
     }
 
-    private Seller buildSeller(ResultSet rs) {
+    private Seller buildSeller(ResultSet rs) throws SQLException {
 
-        try {
+        Seller seller = new Seller();
 
-            Seller seller = null;
+        seller.setId(rs.getInt("Id"));
 
-            if (rs.next()) {
+        seller.setName(rs.getString("Name"));
 
-                Department department = new Department();
+        seller.setEmail(rs.getString("Email"));
 
-                department.setId(rs.getInt("DepartmentId"));
+        seller.setBirthDate(rs.getDate("BirthDate"));;
 
-                department.setName(rs.getString("DepName"));
+        seller.setBaseSalary(rs.getDouble("BaseSalary"));
 
-                seller = new Seller();
+        seller.setDepartment(buildDepartment(rs));
 
-                seller.setId(rs.getInt("Id"));
+        return seller;
 
-                seller.setName(rs.getString("Name"));
+        //o throws no corpo do método faz com que não seja necessário tratar explicitamente a exceção, já que os outros métodos de acesso ao bd já tratam ela
 
-                seller.setEmail(rs.getString("Email"));
+    }
 
-                seller.setBirthDate(rs.getDate("BirthDate"));;
+    private Department buildDepartment(ResultSet rs) throws SQLException {
 
-                seller.setBaseSalary(rs.getDouble("BaseSalary"));
+        Department department = new Department();
 
-                seller.setDepartment(department);
+        department.setId(rs.getInt("DepartmentId"));
 
-            }
+        department.setName(rs.getString("DepName"));
 
-            return seller;
-
-        } catch (SQLException e) {
-            throw new DbException(e.getMessage());
-        }
-
+        return department;
 
     }
 
