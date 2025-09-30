@@ -1,11 +1,24 @@
 package com.projeto.model.dao.impl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
+import com.projeto.db.DB;
+import com.projeto.db.DbException;
 import com.projeto.model.dao.SellerDao;
+import com.projeto.model.entities.Department;
 import com.projeto.model.entities.Seller;
 
 public class SellerDaoJDBC implements SellerDao {
+
+    private Connection conn;
+
+    public SellerDaoJDBC(Connection conn) {
+        this.conn = conn;
+    }
 
     @Override
     public void insert(Seller seller) {
@@ -24,12 +37,78 @@ public class SellerDaoJDBC implements SellerDao {
 
     @Override
     public Seller findById(Integer id) {
-        return null;
+
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        String query = 
+               "SELECT seller.*,department.Name as DepName "
+               + "FROM seller INNER JOIN department "
+               + "ON seller.DepartmentId = department.Id "
+               + "WHERE seller.Id = ?";
+
+        try {
+
+            st = conn.prepareStatement(query);
+
+            st.setInt(1, id); //atribui um valor ao placeholder
+
+            rs = st.executeQuery(); //executa a query
+
+            return buildSeller(rs);
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
+            // dont't close connection cause it can be used later
+        }
+
     }
 
     @Override
     public List<Seller> findAll() {
         return null;
+    }
+
+    private Seller buildSeller(ResultSet rs) {
+
+        try {
+
+            Seller seller = null;
+
+            if (rs.next()) {
+
+                Department department = new Department();
+
+                department.setId(rs.getInt("DepartmentId"));
+
+                department.setName(rs.getString("DepName"));
+
+                seller = new Seller();
+
+                seller.setId(rs.getInt("Id"));
+
+                seller.setName(rs.getString("Name"));
+
+                seller.setEmail(rs.getString("Email"));
+
+                seller.setBirthDate(rs.getDate("BirthDate"));;
+
+                seller.setBaseSalary(rs.getDouble("BaseSalary"));
+
+                seller.setDepartment(department);
+
+            }
+
+            return seller;
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+
+
     }
 
 }
