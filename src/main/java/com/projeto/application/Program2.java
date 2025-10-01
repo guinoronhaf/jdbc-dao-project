@@ -19,6 +19,11 @@ public class Program2 {
         List<Department> list = depDao.findAll();
         list.forEach(System.out::println);
 
+        System.out.println("\n=== Teste 2: findAll ===");
+        Department dep = new Department(null, "Clothes");
+        depDao.insert(dep);
+        System.out.println(dep);
+
     }
 
 }
