@@ -30,6 +30,10 @@ public class Program2 {
 		depDao.update(dep);
 		System.out.println("updated!");
 
+        System.out.println("\n=== Teste 5: deleteById ===");
+		int id = 9;
+		depDao.deleteById(id);
+
     }
 
 }
