@@ -1,4 +1,12 @@
+/home/guilherme/Documentos/estudos/prog/curso_jdbc/jdbc-dao-project/src/main/java/com/projeto/model/dao/impl/DepartmentDaoJDBC.java
+/home/guilherme/Documentos/estudos/prog/curso_jdbc/jdbc-dao-project/src/main/java/com/projeto/application/Program.java
 /home/guilherme/Documentos/estudos/prog/curso_jdbc/jdbc-dao-project/src/main/java/com/projeto/db/DbIntegrityException.java
-/home/guilherme/Documentos/estudos/prog/curso_jdbc/jdbc-dao-project/src/main/java/com/projeto/App.java
+/home/guilherme/Documentos/estudos/prog/curso_jdbc/jdbc-dao-project/src/main/java/com/projeto/model/entities/Seller.java
 /home/guilherme/Documentos/estudos/prog/curso_jdbc/jdbc-dao-project/src/main/java/com/projeto/db/DB.java
+/home/guilherme/Documentos/estudos/prog/curso_jdbc/jdbc-dao-project/src/main/java/com/projeto/model/dao/impl/SellerDaoJDBC.java
+/home/guilherme/Documentos/estudos/prog/curso_jdbc/jdbc-dao-project/src/main/java/com/projeto/application/Program2.java
+/home/guilherme/Documentos/estudos/prog/curso_jdbc/jdbc-dao-project/src/main/java/com/projeto/model/dao/DepartmentDao.java
+/home/guilherme/Documentos/estudos/prog/curso_jdbc/jdbc-dao-project/src/main/java/com/projeto/model/dao/SellerDao.java
+/home/guilherme/Documentos/estudos/prog/curso_jdbc/jdbc-dao-project/src/main/java/com/projeto/model/entities/Department.java
+/home/guilherme/Documentos/estudos/prog/curso_jdbc/jdbc-dao-project/src/main/java/com/projeto/model/dao/DaoFactory.java
 /home/guilherme/Documentos/estudos/prog/curso_jdbc/jdbc-dao-project/src/main/java/com/projeto/db/DbException.java
