@@ -92,6 +92,10 @@ public class SellerDaoJDBC implements SellerDao {
             st.setInt(5, seller.getDepartment().getId());
             st.setInt(6, seller.getId());
 
+			int rowsAffected = st.executeUpdate();
+
+			System.out.println("Rows affected: " + rowsAffected);
+
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         } finally {
